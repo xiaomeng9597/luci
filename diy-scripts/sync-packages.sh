@@ -10,5 +10,5 @@ syncpath="/mnt/xiaomeng9597/workdir"
 # 拉取luci-app-usb-printer软件包
 mkdir -p $syncpath/themes/luci-theme-design
 git clone --branch openwrt-23.05 https://github.com/coolsnowwolf/luci
-# ls luci/themes/luci-theme-design
+ls luci/themes
 cp -a luci/themes/luci-theme-design/* $syncpath/themes/luci-theme-design
