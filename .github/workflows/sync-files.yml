@@ -1,0 +1,38 @@
+name: Sync Files
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: '55 15 * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 准备完成
+      uses: actions/checkout@v3
+
+    - name: 下载源码
+      run: |
+        chmod +x $GITHUB_WORKSPACE/scripts/*.sh
+        $GITHUB_WORKSPACE/diy-scripts/sync-packages.sh
+
+    - name: 同步配置
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        personal_token: ${{ secrets.ACCESS_TOKEN }}
+        publish_branch: main
+        publish_dir: /mnt/xiaomeng9597/workdir
+        user_name: 'GitHub Action'
+        user_email: 'github-actions[bot]@github.com'
+        exclude_assets: ''
+        keep_files: true
+        commit_message: "Sync files"
+
+    - name: 删除运行记录
+      uses: xiaomeng9597/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 1
+        token: ${{ secrets.ACCESS_TOKEN }}
